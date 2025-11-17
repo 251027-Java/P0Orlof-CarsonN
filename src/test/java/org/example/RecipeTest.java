@@ -50,8 +50,6 @@ class RecipeTest {
     @Test
     void getTitle() {
         //Defining the recipe
-        Ingredient flour = new Ingredient("flour", "cups", 2.5);
-        Ingredient water = new Ingredient("water", "grams", 120.0);
         List<Ingredient> ingredientList = new ArrayList<>();
         String instructions = "These are the instructions.";
         Recipe recipe = new Recipe("Simple", ingredientList, instructions);
@@ -67,8 +65,6 @@ class RecipeTest {
     @Test
     void getInstructions() {
         //Defining the recipe
-        Ingredient flour = new Ingredient("flour", "cups", 2.5);
-        Ingredient water = new Ingredient("water", "grams", 120.0);
         List<Ingredient> ingredientList = new ArrayList<>();
         String instructions = "These are the instructions.";
         Recipe recipe = new Recipe("Simple", ingredientList, instructions);
@@ -80,4 +76,26 @@ class RecipeTest {
         //Execute the test
         assertEquals(expected, result);
     }
+    @Test
+    void setTitle(){
+        Recipe recipe = new Recipe();
+        recipe.setTitle("This Title");
+        assertEquals("This Title", recipe.getTitle());
+    }
+
+    @Test
+    void setIngredients(){
+        Recipe recipe = new Recipe();
+        List<Ingredient> ingredientList = new ArrayList<>();
+        recipe.setIngredients(ingredientList);
+
+        assertEquals(ingredientList, recipe.getIngredients());
+    }
+    @Test
+    void setInstructions(){
+        Recipe recipe = new Recipe();
+        recipe.setInstructions("These are the instructions");
+        assertEquals("These are the instructions", recipe.getInstructions());
+    }
+
 }

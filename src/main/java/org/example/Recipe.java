@@ -6,7 +6,7 @@ import java.util.List;
 public class Recipe {
     //Fields
     private String title;
-    private List<Ingredient> ingredients= new ArrayList<>();
+    private List<Ingredient> ingredients;
     private String instructions;
     //Constructors
     public Recipe(String title, List<Ingredient> ingredients, String instructions){
@@ -46,5 +46,11 @@ public class Recipe {
 
     public String getTitle(){return title;}
 
-    public String getInstructions(){return instructions;};
+    public String getInstructions(){return instructions;}
+
+    public void setTitle(String title){this.title = title;}
+
+    public void setIngredients(List <Ingredient> ingredients){this.ingredients = ingredients;}
+
+    public void setInstructions(String instructions) {this.instructions = instructions;}
 }
