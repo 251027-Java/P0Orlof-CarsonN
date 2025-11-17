@@ -26,10 +26,11 @@ public class Ingredient {
 
         if (measurement.equalsIgnoreCase("cups")){
             this.cups = amount;
-            this.grams =  amount* gramsToCupRatio;
+            this.grams = Math.round(amount* gramsToCupRatio * 100.0) / 100.0;
+
         } else if (measurement.equalsIgnoreCase("grams")){
             this.grams = amount;
-            this.cups = amount/ gramsToCupRatio;
+            this.cups = Math.round(amount/ gramsToCupRatio * 100.0) / 100.0;
         }
     }
 
@@ -46,5 +47,9 @@ public class Ingredient {
 
     public double getGrams(){
         return this.grams;
+    }
+
+    public String getName(){
+        return this.name;
     }
 }
