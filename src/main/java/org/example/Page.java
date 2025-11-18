@@ -29,4 +29,6 @@ public class Page {
     public void setPageNumber(int pageNumber){this.pageNumber = pageNumber;}
 
     public void setRecipe(Recipe recipe) {this.recipe = recipe;}
+
+    public String getName(){return this.recipe.getTitle();}
 }
