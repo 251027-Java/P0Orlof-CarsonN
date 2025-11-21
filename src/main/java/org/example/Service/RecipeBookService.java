@@ -14,13 +14,19 @@ public class RecipeBookService {
     private RecipeBook recipeBook;
 
     public RecipeBookService(IRepository repository){
-        this.repository = repository;}
+        this.repository = repository;
+        this.recipeBook = new RecipeBook("My Sourdough Recipe Book");
+    }
 
     public void loadBook(){
-        this.recipeBook = repository.loadBook();
-        if(this.recipeBook == null){
-            this.recipeBook = new RecipeBook("My Sourdough Recipe Book");
+        RecipeBook loaded = repository.loadBook();
+        if(loaded != null){
+            this.recipeBook = loaded;
         }
+    }
+
+    public void printBook(){
+        IO.println(this.recipeBook.toString());
     }
 
     public void saveBook(){
@@ -31,9 +37,7 @@ public class RecipeBookService {
     {
         validateRecipe(recipe);
 
-        recipeBook.addRecipe(recipe);
-        repository.saveBook(recipeBook);
-
+        repository.addRecipe(recipeBook, recipe);
     }
 
     public void addRecipeAtPage(int pageNumber, Recipe recipe){

@@ -27,6 +27,9 @@ public class RecipeBook {
 
     //Methods
 
+    public String toString(){
+        return getTableOfContents() + getPages().toString();
+    }
     public String getTableOfContents(){
         StringBuilder tableOfContents = new StringBuilder("Table of Contents\n\n");
         if (this.pages == null){
@@ -80,5 +83,6 @@ public class RecipeBook {
         }
         return this.pages.get(pageNum - 1).getRecipe();
     }
+
 
 }
