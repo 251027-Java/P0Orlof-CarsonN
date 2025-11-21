@@ -25,6 +25,11 @@ public class RecipeBookService {
         }
     }
 
+    public void setRecipeBook(RecipeBook book){
+        this.recipeBook = book;
+        repository.saveBook(recipeBook);
+    }
+
     public void printBook(){
         IO.println(this.recipeBook.toString());
     }

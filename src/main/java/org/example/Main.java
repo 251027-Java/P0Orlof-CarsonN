@@ -6,52 +6,158 @@ import org.example.Service.RecipeBookService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     static void main() {
-        IRepository repo = new JSONRepository();
+
+        Scanner scanner = new Scanner(System.in);
+
+        IO.println("Please enter a filename: ");
+        String filename = validateFilename(scanner.nextLine());
+
+        IRepository repo = new JSONRepository(filename);
         RecipeBookService service = new RecipeBookService(repo);
         service.loadBook();
-        service.saveBook();
+        IO.println("Enter your recipe book name: ");
+        String bookName = scanner.nextLine();
+        RecipeBook book = new RecipeBook(bookName);
 
-        service.printBook();
 
-        Ingredient starter = new Ingredient("Starter", "grams", 100);
-        Ingredient water = new Ingredient("Water", "grams", 375);
-        Ingredient flour = new Ingredient("Flour", "grams", 500);
-        Ingredient salt = new Ingredient("Salt", "grams", 10);
+        boolean running = true;
+        while(running){
+            IO.println("\n -------" + book.getTitle()+ "------");
+            IO.println("1: View all pages");
+            IO.println("2: View a recipe by page");
+            IO.println("3: Add a new recipe");
+            IO.println("4: Save recipe book");
+            IO.println("0: Exit");
+            IO.println("Please enter an option: ");
 
-        List<Ingredient> ingredientList = new ArrayList<>();
+            String choice = scanner.nextLine();
 
-        ingredientList.add(starter);
-        ingredientList.add(water);
-        ingredientList.add(flour);
-        ingredientList.add(salt);
+            switch (choice) {
+                case "1":
+                    service.getPages().forEach(IO::println);
+                    break;
+                case "2":
+                    int pageNum;
+                    while (true) {
+                        IO.println("Please enter a page number you would like to view: ");
+                        String input = scanner.nextLine();
+                        try {
+                            pageNum = Integer.parseInt(input);
+                            break;
+                        } catch (NumberFormatException e) {
+                            IO.println("Please enter a valid number.");
+                        }
+                    }
+                    try {
+                        Recipe recipe = service.getRecipe(pageNum);
+                        if (recipe == null) {
+                            IO.println("No recipe found aat that page.");
+                        } else {
+                            IO.println(recipe);
+                        }
 
-        String instructions = "Make the dough: Whisk the starter and water together in a large bowl with a fork or spatula. Add the flour and salt. Mix to combine, finishing by hand if necessary to form a rough dough. Cover with a damp towel and let rest for 30 minutes. \n" +
-                "\n" +
-                "Stretch and fold: After 30 minutes, grab a corner of the dough and pull it up and into the center. Repeat until you’ve performed this series of folds 4 to 5 times with the dough. Let dough rest for another 30 minutes and repeat the stretching and folding action. If you have the time: do this twice more for a total of 4 times in 2 hours. Note: Even if you can only perform one series of stretches and folds, your dough will benefit. So don’t worry if you have to run off shortly after you mix the dough.\n" +
-                "\n" +
-                "Bulk Fermentation (first rise): Cover the bowl with a towel and let rise at room temperature, about 8 to 10 hours at 70°F (21°C) or even less if you live in a warm environment. The dough is ready when it has increased by 50% in volume, has a few bubbles on the surface, and jiggles when you move the bowl from side to side. (UPDATE: In the past I have recommended letting the dough rise until it doubles in volume. If you’ve had success with this, continue to let the dough double. Recently, I have been stopping the bulk fermentation when the dough increases by 50% in volume, and I feel I am actually getting better oven spring in the end.) (Note regarding timing: If you are using 100 g of starter, the bulk fermentation may take less than 8 to 10 hours. If you live in a warm, humid environment, the bulk fermentation may take even less time. In the late spring/early summer, for example, my kitchen is 78ºF and the bulk fermentation takes 6 hours. It is best to rely on visual cues (increase in volume by roughly 50%) as opposed to time to determine when the bulk fermentation is done. A straight-sided vessel makes monitoring the bulk fermentation especially easy because it allows you to see when your dough has truly increased in volume by 50%.)\n" +
-                "\n" +
-                "Shape (See notes above): Coax the dough onto a lightly floured surface. Gently shape it into a round: fold the top down to the center, turn the dough, fold the top down to the center, turn the dough; repeat until you’ve come full circle. If you have a bench scraper, use it to push and pull the dough to create tension. \n" +
-                "Rest: Let the dough rest seam side up rest for 30 minutes. Meanwhile, line an 8-inch (20-cm) bowl or proofing basket with a towel (flour sack towels are ideal) and dust with flour (preferably rice flour, which doesn’t burn the way all-purpose flour does). Using a bench scraper or your hands, shape it again as described in step 4. Place the round into your lined bowl, seam side up.\n" +
-                "\n" +
-                "Proof (second rise): Cover the dough and refrigerate for 1 hour or for as long as 48 hours. (Note: I prefer to let this dough proof for at least 24 hours prior to baking. See video for the difference in the crumb of a loaf that has proofed for 6 hours vs one that has proofed for 24 hours. If you choose to proof the dough in the fridge for an extended period of time, you may want to tuck it into a loosely tied bag — produce bags from the grocery store are great for this purpose — to ensure the dough does not dry out. The original recipe calls for a 1-hour rise, and if you have had success doing that, by all means, keep doing it.) \n" +
-                "\n" +
-                "Place a Dutch oven in your oven, and preheat your oven to 550°F (290°C). Cut a piece of parchment to fit the size of your baking pot.\n" +
-                "Score: Place the parchment over the dough and invert the bowl to release. Using the tip of a small knife or a razor blade, score the dough however you wish — a simple “X” is nice. Use the parchment to carefully transfer the dough into the preheated baking pot.\n" +
-                "Bake: Lower the oven to temperature to 450ºF (230ºC). Carefully cover the pot. Bake the dough for 30 minutes, covered. Remove the lid, lower the temperature to 400ºF (200ºC) and continue to bake for 10 – 15 minutes more. If necessary, lift the loaf out of the pot, and bake directly on the oven rack for the last 5 to 10 minutes. Cool on a wire rack for 1 hour before slicing.\n" +
-                "\n" +
-                "This loaf will stay fresh up to 3 days stored at room temperature in an airtight plastic bag or container. It freezes beautifully, too. ";
-        Recipe plain = new Recipe("Plain Sourdough Recipe", ingredientList, instructions);
+                    } catch (IllegalArgumentException e) {
+                        IO.println(e.getMessage());
+                    }
+                    break;
+                case "3":
+                    IO.println("Please enter a recipe title: ");
+                    String title = scanner.nextLine();
 
-        service.addRecipe(plain);
-        service.saveBook();
-        service.printBook();
+                    List<Ingredient> ingredients = new ArrayList<>();
+                    IO.println("Add your ingredients or type DONE to finish: ");
+                    while (true) {
+                        IO.println("Enter the ingredient name: ");
+                        String ingredientName = scanner.nextLine();
 
+                        if (ingredientName.equalsIgnoreCase("DONE")) {
+                            break;
+                        }
+                        if (ingredientName.isBlank()) {
+                            System.out.println("Ingredient name cannot be empty.");
+                            continue;
+                        }
+                        String measurementType;
+                        while (true) {
+                            IO.println("Please enter the measurement type (cups or grams)");
+                            measurementType = scanner.nextLine().toLowerCase();
+                            if (measurementType.equalsIgnoreCase("grams") || measurementType.equalsIgnoreCase("cups")) {
+                                break;
+                            } else {
+                                IO.println("Invalid measurement type.");
+                            }
+                        }
+                        double amount;
+                        while (true) {
+                            IO.println("Please enter the amount: ");
+                            String amt = scanner.nextLine();
+                            try {
+                                amount = Double.parseDouble(amt);
+                                break;
+                            } catch (NumberFormatException e) {
+                                IO.println("Please enter a valid number.");
+                            }
+                        }
+                        ingredients.add(new Ingredient(ingredientName, measurementType, amount));
+                    }
+                    IO.println("Please enter the instructions");
+                    String instructions = scanner.nextLine();
+                    Recipe recipe = new Recipe(title, ingredients, instructions);
+
+                    service.addRecipe(recipe);
+
+                    IO.println("Recipe added successfully!");
+                    break;
+
+                case "4":
+                    service.saveBook();
+                    IO.println("Recipe book saved");
+                    break;
+
+                case "0":
+                    running = false;
+                    IO.println("See you next time!");
+                    break;
+
+                default:
+                    IO.println("Invalid option, please try again");
+
+            }
+
+
+        }
 
     }
+    public static String validateFilename(String filename) {
+        // 1. Cannot be empty
+        if (filename == null || filename.isBlank()) {
+            System.out.println("Filename cannot be empty. Using default 'recipes.json'.");
+            return "recipes.json";
+        }
+
+        // 2. Remove leading/trailing spaces
+        filename = filename.trim();
+
+        // 3. Ensure it ends with .json
+        if (!filename.toLowerCase().endsWith(".json")) {
+            System.out.println("Filename must end with .json. Adding extension automatically.");
+            filename = filename + ".json";
+        }
+
+        // 4. Disallow illegal characters (Windows & Mac safe list)
+        String illegal = "[\\\\/:*?\"<>|]";
+        if (filename.matches(".*" + illegal + ".*")) {
+            System.out.println("Filename contains invalid characters. Using default 'recipes.json'.");
+            return "recipes.json";
+        }
+
+        return filename;
+    }
+
 }

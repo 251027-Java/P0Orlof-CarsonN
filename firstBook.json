@@ -1,0 +1,34 @@
+{
+  "title": "My Sourdough Recipe Book",
+  "pages": [
+    {
+      "pageNumber": 1,
+      "recipe": {
+        "title": "Plain Sourdough",
+        "ingredients": [
+          {
+            "name": "flour",
+            "cups": 4.17,
+            "grams": 500.0
+          },
+          {
+            "name": "starter",
+            "cups": 0.42,
+            "grams": 100.0
+          },
+          {
+            "name": "water",
+            "cups": 1.58,
+            "grams": 375.0
+          },
+          {
+            "name": "salt",
+            "cups": 0.03,
+            "grams": 10.0
+          }
+        ],
+        "instructions": "Make the dough: Whisk the starter and water together in a large bowl with a fork or spatula. Add the flour and salt. Mix to combine, finishing by hand if necessary to form a rough dough. Cover with a damp towel and let rest for 30 minutes. "
+      }
+    }
+  ]
+}
