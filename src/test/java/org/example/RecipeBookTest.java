@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RecipeBookTest {
 
-    RecipeBook recipeBook = new RecipeBook();
+    RecipeBook recipeBook = new RecipeBook("New Book");
     List<Page> pages = new ArrayList<>();
 
 
@@ -29,6 +29,17 @@ class RecipeBookTest {
         pages.add(page3);
 
         recipeBook.setPages(pages);
+    }
+
+    @Test
+    void getTitle(){
+        assertEquals("New Book", recipeBook.getTitle());
+    }
+
+    @Test
+    void setTitle(){
+        recipeBook.setTitle("Another Book");
+        assertEquals("Another Book", recipeBook.getTitle());
     }
 
     @Test
@@ -69,25 +80,30 @@ class RecipeBookTest {
     }
 
     @Test
-    public void testAddRecipeCreatesPageWithCorrectNumberAndRecipe() {
-        // Arrange
+    public void testAddRecipeAtSpecificPageRenumbersFollowingPages() {
         RecipeBook book = new RecipeBook("My Book");
-        Recipe recipe = new Recipe("Sourdough", new ArrayList<>(), "Mix and bake.");
 
-        // Act
-        book.addRecipe(recipe);
+        Recipe recipe1 = new Recipe("Sourdough", new ArrayList<>(), "Step 1");
+        Recipe recipe2 = new Recipe("Focaccia", new ArrayList<>(), "Step 1");
+        Recipe recipeNew = new Recipe("Inserted Recipe", new ArrayList<>(), "Step X");
 
-        // Assert
+        book.addRecipe(recipe1);
+        book.addRecipe(recipe2);
+
+        book.addRecipe(recipeNew, 2);
+
         List<Page> pages = book.getPages();
-        assertEquals(1, pages.size(), "There should be exactly one page after adding a recipe.");
+        assertEquals(3, pages.size(), "There should be 3 pages after insertion.");
 
-        Page firstPage = pages.getFirst();
-        assertEquals(1, firstPage.getPageNumber(), "First page number should be 1.");
-        assertEquals(recipe, firstPage.getRecipe(), "Page should contain the recipe that was added.");
+        assertEquals(1, pages.get(0).getPageNumber());
+        assertEquals(recipe1, pages.get(0).getRecipe());
+
+        assertEquals(2, pages.get(1).getPageNumber());
+        assertEquals(recipeNew, pages.get(1).getRecipe());
+
+        assertEquals(3, pages.get(2).getPageNumber());
+        assertEquals(recipe2, pages.get(2).getRecipe());
     }
 
 
-    @Test
-    void addRecipe() {
-    }
 }

@@ -57,13 +57,28 @@ public class RecipeBook {
     }
 
     public void addRecipe(Recipe recipe, int pageNumber){
+        if (pageNumber < 1 || pageNumber > pages.size() + 1) {
+            throw new IllegalArgumentException("Invalid page number.");
+        }
         Page newPage = new Page(pageNumber, recipe);
         this.pages.add(pageNumber-1, newPage);
+
+        for (int i = pageNumber; i < pages.size(); i++) {
+            pages.get(i).setPageNumber(i + 1);
+        }
     }
 
     public void addRecipe(Recipe recipe){
-        int pageNum = this.pages.toArray().length + 1;
+        int pageNum = this.pages.size() + 1;
         Page newPage = new Page(pageNum, recipe);
         this.pages.add(newPage);
     }
+
+    public Recipe getRecipe(int pageNum){
+        if (pageNum < 1 || pageNum > pages.size()) {
+            throw new IllegalArgumentException("Invalid page number.");
+        }
+        return this.pages.get(pageNum - 1).getRecipe();
+    }
+
 }
